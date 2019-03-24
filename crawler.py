@@ -5,6 +5,7 @@ import config_heros
 # from sklearn.svm import SVR
 import time
 import csv
+# import numpy as np
 
 def get_item_ordersn(platform=1,num_of_pages=1):
 
@@ -181,7 +182,8 @@ if __name__=="__main__":
 
 
     platform=1
-    sample_page=1
+    sample_page=100
+
     ordersn_list=get_item_ordersn(platform,sample_page)
     print 'crawling ordersn: page '+str(sample_page)+'_'+'sample_page'
     heros=[]
@@ -190,9 +192,62 @@ if __name__=="__main__":
     now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
     fname = "result/data_platform_" + str(platform) + "_"+str(len(ordersn_list))+'_samples_' + now + ".csv"
 
+
     data_file=open(fname,'wb')
     csv_write = csv.writer(data_file, dialect='excel')
+    #表头
+    hero_info=config_heros.get_config()['hero']
+    flag_5star=['' for i in range(len(hero_info))]
+    name_hero=['' for i in range(len(hero_info))]
+    country_text=['s','汉','魏','蜀','吴','群']
+    hero_type_text=['s','弓','步','骑']
 
+    for i in range(len(hero_info)):
+        flag_5star[i]=hero_info[i]['quality']
+        name_hero[i]=hero_info[i]['name']+'_'+country_text[int(hero_info[i]['country'])]+'_'+hero_type_text[int(hero_info[i]['hero_type'])]
+    csv_write.writerow(['']+name_hero)
+    csv_write.writerow([''] + flag_5star)
+
+    print len(ordersn_list)
+    n=0
+    t1 = time.time()
+    for sn in ordersn_list:
+        n+=1
+        item_detail=get_item_details(sn)
+        print 'total_time:',time.time()-t1,'processing:',n,'/',len(ordersn_list)
+        heros.append(details2vector(item_detail)['hero'])
+        price.append(details2vector(item_detail)['price'])
+        csv_write.writerow([details2vector(item_detail)['price']]+details2vector(item_detail)['hero'])
+
+    data_file.close()
+
+
+    platform=2
+    sample_page=100
+
+    ordersn_list=get_item_ordersn(platform,sample_page)
+    print 'crawling ordersn: page '+str(sample_page)+'_'+'sample_page'
+    heros=[]
+    price=[]
+
+    now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
+    fname = "result/data_platform_" + str(platform) + "_"+str(len(ordersn_list))+'_samples_' + now + ".csv"
+
+
+    data_file=open(fname,'wb')
+    csv_write = csv.writer(data_file, dialect='excel')
+    #表头
+    hero_info=config_heros.get_config()['hero']
+    flag_5star=['' for i in range(len(hero_info))]
+    name_hero=['' for i in range(len(hero_info))]
+    country_text=['s','汉','魏','蜀','吴','群']
+    hero_type_text=['s','弓','步','骑']
+
+    for i in range(len(hero_info)):
+        flag_5star[i]=hero_info[i]['quality']
+        name_hero[i]=hero_info[i]['name']+'_'+country_text[int(hero_info[i]['country'])]+'_'+hero_type_text[int(hero_info[i]['hero_type'])]
+    csv_write.writerow(['']+name_hero)
+    csv_write.writerow([''] + flag_5star)
 
     print len(ordersn_list)
     n=0
