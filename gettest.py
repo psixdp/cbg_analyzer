@@ -97,10 +97,10 @@ if __name__ == "__main__":
     cfg = config_heros.get_config()
 
 
-    #{"name": "桃园结义", "country": "5", "hero_type": 1, "season": "N", "icon_hero_id": 110500, "quality": 5, "hero_id": 110500}
+    #dian_cang{"name": "桃园结义", "country": "5", "hero_type": 1, "season": "N", "icon_hero_id": 110500, "quality": 5, "hero_id": 110500}
     for dian_cang in cfg['dian_cang']:
         print dian_cang['name']
-    #{"name": "吕布", "country": "5", "hero_type": 1, "season": "S2", "icon_hero_id": 100479, "quality": 5, "hero_id": 100479}
+    #hero:{"name": "吕布", "country": "5", "hero_type": 1, "season": "S2", "icon_hero_id": 100479, "quality": 5, "hero_id": 100479}
     for hero in cfg['hero']:
         print hero['name']
     #dian_ji {"name": "六韬·文韬", "country": "5", "hero_type": 1, "season": "N", "icon_hero_id": 100403, "quality": 4, "hero_id": 100403}
